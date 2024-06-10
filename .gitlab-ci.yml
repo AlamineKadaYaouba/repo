@@ -1,0 +1,35 @@
+image: centos:8
+
+stages:
+  - deploy
+
+variables:
+  # Remplacer par le nom de votre projet
+  GIT_REPO: tests
+  # Remplacer par le chemin d'accès à votre répertoire de projet local
+  LOCAL_PROJECT_DIR: http://192.168.0.244:80/projets_php_classiques
+  # Remplacer par le nom d'utilisateur SSH sur le serveur CentOS
+  SSH_USER: root
+  # Remplacer par le chemin d'accès au répertoire de déploiement sur le serveur CentOS
+  REMOTE_DEPLOY_DIR: /var/www/html/projets_php_classiques
+
+deploy:
+  stage: deploy
+  script:
+    # Générer un fichier compressé du code de l'application
+    cd ${LOCAL_PROJECT_DIR}
+    tar -czvf application.tar.gz *
+    # Se connecter au serveur CentOS via SSH
+    ssh ${SSH_USER}@192.168.0.244 << EOF
+      # Créer le répertoire de déploiement s'il n'existe pas
+        mkdir -p ${REMOTE_DEPLOY_DIR}
+      # Supprimer le contenu du répertoire de déploiement
+        rm -rf ${REMOTE_DEPLOY_DIR}/*
+      # Transférer le fichier compressé vers le serveur
+        scp application.tar.gz ${REMOTE_DEPLOY_DIR}/
+      # Extraire le fichier compressé sur le serveur
+        cd ${REMOTE_DEPLOY_DIR}
+        tar -xf application.tar.gz
+      # Supprimer le fichier compressé
+        rm application.tar.gz
+    EOF
