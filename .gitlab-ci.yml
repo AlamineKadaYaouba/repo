@@ -22,7 +22,7 @@ deploy:
     # Se connecter au serveur CentOS via SSH
     ssh ${SSH_USER}@192.168.0.244 << EOF
       # Créer le répertoire de déploiement s'il n'existe pas
-        mkdir -p ${REMOTE_DEPLOY_DIR}
+      mkdir -p ${REMOTE_DEPLOY_DIR}
       # Supprimer le contenu du répertoire de déploiement
         rm -rf ${REMOTE_DEPLOY_DIR}/*
       # Transférer le fichier compressé vers le serveur
