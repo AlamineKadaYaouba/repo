@@ -1,54 +1,5 @@
-stages:
-  - setup
-  - test
-  - deploy
-
-variables:
-  PHP_VERSION: "8.1" # Version de PHP utilisée
-  COMPOSER_CACHE_DIR: "$CI_PROJECT_DIR/.composer_cache"
-
-cache:
-  paths:
-    - .composer_cache/
-
-before_script:
-  # Mettre à jour les paquets et installer les dépendances nécessaires
-  - yum -y update
-  - yum -y install git unzip epel-release
-  - yum -y install php php-cli php-mbstring php-xml php-zip php-intl
-  - curl -sS https://getcomposer.org/installer | php
-  - mv composer.phar /usr/local/bin/composer
-
-setup:
-  stage: setup
-  script:
-    - composer install --prefer-dist --no-ansi --no-interaction --no-progress --no-scripts
-  artifacts:
-    paths:
-      - vendor/
-
-test:
-  stage: test
-  script:
-    - vendor/bin/phpunit --configuration phpunit.xml --coverage-text
-  dependencies:
-    - setup
-  artifacts:
-    reports:
-      junit: junit.xml
-    paths:
-      - coverage/
-
 deploy:
-  stage: deploy
   script:
-    - echo "Déploiement sur le serveur Apache..."
-    # Assurez-vous que les permissions sont correctement définies pour copier les fichiers
-    - rsync -avz --delete $CI_PROJECT_DIR/ /var/www/html/phpinfo.php/
-    - chown -R apache:apache /var/www/html/phpinfo.php/
-    - systemctl restart httpd
-  only:
-    - master
-  dependencies:
-    - setup
-    - test
+    -ssh -o StrickHostKeyChecking=no -i $PRIV_SSH_KEY root@192.168.0.244 "
+      rm /var/www/html/*
+      cp phpinfo.php /var/www/html/phpinfo.php"
