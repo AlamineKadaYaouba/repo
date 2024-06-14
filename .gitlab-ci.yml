@@ -1,6 +1,6 @@
 deploy:
   script:
     -ssh -o StrickHostKeyChecking=no -i $PRIV_SSH_KEY root@192.168.0.244 "
-      chmod 775 /var/www/html/projets_php_classiques/* 
-      rm /var/www/html/projets_php_classiques/*
-      cp phpinfo.php /var/www/html/projets_php_classiques/index.php"
+      chmod 775 /var/www/html/* 
+      rm /var/www/html/*
+      cp phpinfo.php /var/www/html/index.php"
