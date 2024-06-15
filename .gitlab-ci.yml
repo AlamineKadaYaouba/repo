@@ -15,5 +15,5 @@ deploy:
     - sshpass -p "sygalin@2024" ssh root@192.168.0.244 "systemctl start httpd"
     - sshpass -p "sygalin@2024" ssh root@192.168.0.244 "systemctl enable httpd"
 
-only:
-    - main
+  only:
+      - main
