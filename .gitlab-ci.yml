@@ -4,6 +4,9 @@ before_script:
 stages:
   - deploy
 
+tags:
+  - my-runner
+
 deploy:
   stage: deploy
   script:
@@ -11,4 +14,6 @@ deploy:
     - sshpass -p "sygalin@2024" ssh root@192.168.0.244 "chown -R apache:apache /var/www/html"
     - sshpass -p "sygalin@2024" ssh root@192.168.0.244 "systemctl start httpd"
     - sshpass -p "sygalin@2024" ssh root@192.168.0.244 "systemctl enable httpd"
-    
+
+only:
+    - main
