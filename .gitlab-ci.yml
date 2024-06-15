@@ -6,13 +6,14 @@ stages:
 
 deploy:
   stage: deploy
+  tags:
+    - my-runner
+
   script:
     - sshpass -p "sygalin@2024" ssh root@192.168.0.244 "cp $CI_PROJECT_DIR/info.php /var/www/html/index.php"
     - sshpass -p "sygalin@2024" ssh root@192.168.0.244 "chown -R apache:apache /var/www/html"
     - sshpass -p "sygalin@2024" ssh root@192.168.0.244 "systemctl start httpd"
     - sshpass -p "sygalin@2024" ssh root@192.168.0.244 "systemctl enable httpd"
-  tags:
-    - my-runner
 
 only:
     - main
