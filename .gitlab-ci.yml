@@ -7,10 +7,9 @@ deploy:
     - my-runner
 
   script:
-    - sshpass -p "sygalin@2024" ssh root@192.168.0.244 "cp $CI_PROJECT_DIR/info.php /var/www/html/Test/index.php"
-    - sshpass -p "sygalin@2024" ssh root@192.168.0.244 "chown -R apache:apache /var/www/html/Test"
-    - sshpass -p "sygalin@2024" ssh root@192.168.0.244 "systemctl start httpd"
-    - sshpass -p "sygalin@2024" ssh root@192.168.0.244 "systemctl enable httpd"
+    - sshpass -p "sygalin@2024" ssh root@192.168.0.244
+    - sshpass -p "sygalin@2024" scp $CI_PROJECT_DIR/info.php /var/www/html/Test/index.php
+    - sshpass -p "sygalin@2024" systemctl reload httpd
 
   only:
       - main
