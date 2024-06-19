@@ -10,7 +10,7 @@ deploy:
     - my-runner
 
   script:
-    - sshpass -p "sygalin@2024" ssh -o StrictHostKeyChecking=no -t root@192.168.0.244 "cp $CI_PROJECT_DIR/phpinfo.php /var/www/html/index.php; systemctl reload httpd; mkdir -p /var/www/html/test cd /var/www/html/test; git init; git remote add https://192.168.0.244/genesis/tests.git; git pull origin main"
+    - sshpass -p "sygalin@2024" ssh -o StrictHostKeyChecking=no -t root@192.168.0.244 "cp $CI_PROJECT_DIR/phpinfo.php /var/www/html/index.php; systemctl reload httpd; mkdir -p /var/www/html/test cd /var/www/html/test; git init; git remote add origin https://192.168.0.244/genesis/tests.git; git pull origin main"
 
   only:
       - main
