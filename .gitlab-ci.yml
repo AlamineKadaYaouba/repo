@@ -1,6 +1,3 @@
-before_script:
-  - yum install -y sshpass
-
 stages:
   - deploy
 
